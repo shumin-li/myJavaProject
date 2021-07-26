@@ -40,3 +40,11 @@ In my app, I will combine my background in oceanography and knowledge of program
 to ensure my app of solid scientific foundation, good coding style and straightforward 
 user interface.
 
+
+## User Stories
+
+* As a user, I want to type in a time at which I want to know the tidal elevations
+* As a user, I want to get the tidal elevation of the time I put
+* As a user, I want to view a tide chat of +/- 24 hours of the time I put
+* As a user, I want to save my search result to a local repository
+* As a user, I want to review all my saved tide charts
