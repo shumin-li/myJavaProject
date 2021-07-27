@@ -1,14 +1,19 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 // Represents a list of tidal elevation research history
 public class SearchHistory {
+    private ArrayList<TideSearch> newHistory;
 
 
     /*
      * Construct a SearchHistory
      */
     public SearchHistory() {
+        newHistory = new ArrayList<TideSearch>();
     }
 
     // MODIFIES: this
@@ -28,6 +33,12 @@ public class SearchHistory {
     // EFFECTS: get the size of the current SearchHistory List
     public int size() {
         return 1;
+    }
+
+
+    public void doReviewHistory() {
+        System.out.println("Pretend there is a list of research Result");
+
     }
 
 
