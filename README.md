@@ -43,3 +43,5 @@ solid scientific foundation, good coding style and straightforward user interfac
 * As a user, I want to save the search to MyFavoriteSearch
 * As a user, I want to review all my saved TideSearch
 * As a user, I want to delete some of my saved TideSearch
+* As a user, I want to be able to save my favorite TideSearch list to a file
+* As a user, I want to be able to load my saved favorite TideSearch list from a file
