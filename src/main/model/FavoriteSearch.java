@@ -1,43 +1,53 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 
 // Represents a list of tidal elevation research history
 public class FavoriteSearch {
-    private ArrayList<TideSearch> newHistory;
+    private HashMap<String, TideCalculate> favoriteList;
+    private String searchKey;
+    private TideCalculate tideCalculate;
 
 
     /*
-     * Construct a SearchHistory
+     * Construct a HashMap of Favorite Search
      */
     public FavoriteSearch() {
-        newHistory = new ArrayList<TideSearch>();
+        favoriteList = new HashMap<>();
     }
 
     // MODIFIES: this
     // EFFECTS: add a new TideSearch result on to the list of existing search history
-    public void addSearch(TideSearch tideSearch) {
-        // stub;
-
+    public void addFavorite(TideSearch tideSearch) {
+        this.favoriteList.put(tideSearch.getSearchKey(), tideSearch.getTideCalculate());
     }
 
     // MODIFIES: this
     // add a new TideSearch result on to the list of existing search history
-    public void removeSearch(TideSearch tideSearch) {
-        // stub;
-
+    public void removeFavorite(String key) {
+        this.favoriteList.remove(key);
     }
 
-    // EFFECTS: get the size of the current SearchHistory List
+    public void removeAll() {
+        this.favoriteList.clear();
+    }
+
     public int size() {
-        return 1;
+        return this.favoriteList.size();
     }
 
 
-    public void doReviewHistory() {
-        System.out.println("Pretend there is a list of research Result");
+    public void doReview() {
+        if (favoriteList.size() == 0) {
+            System.out.println("No record!");
+        } else {
+            for (String key : favoriteList.keySet()) {
+                TideCalculate favoriteCalculate = favoriteList.get(key);
+                System.out.println("Key: " + key + ", Values: " + favoriteCalculate.shortMessage());
+
+            }
+        }
 
     }
 

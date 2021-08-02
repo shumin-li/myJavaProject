@@ -1,19 +1,11 @@
 package model;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 // Represents a search of tidal elevation for the given time and location
 public class TideSearch {
-
-    private double time;          // time for search in Julian date
-    private String site;          // Site name as a String, e.g. Pt. Atkinson, Steveston ...
-    private double longitude;     // longitude of the site location in degrees
-    private double latitude;      // latitude oif the site location in degrees
-    private double tidalElevation;// tidal Elevation of the given time.
-    private int searchID;         // the ID for this particular search
 
     private Scanner input = new Scanner(System.in);
 
@@ -24,16 +16,18 @@ public class TideSearch {
     private String minuteString;
     private int jday1970 = 719529;
 
-    private int yearInt;
-    private int monthInt;
-    private int dayInt;
-    private int hourInt;
-    private int minuteInt;
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
+
+    private int searchID;
+    private String searchKey;
 
     private int[] monthDaysNoLeapArray = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private int[] monthDaysIsLeapArray = new int[]{31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private String[] myMonthString;
-    private int[] jadayToDatevecResult;
 
     {
         myMonthString = new String[]{"January", "February", "March", "April", "May",
@@ -56,29 +50,19 @@ public class TideSearch {
      * EFFECTS: Construct a TideSearch class and set the time and site as given
      */
     public TideSearch(int year, int month, int day, int hour, int minute) {
-        this.yearInt = year;
-        this.monthInt = month;
-        this.dayInt = day;
-        this.hourInt = hour;
-        this.minuteInt = minute;
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.hour = hour;
+        this.minute = minute;
         jdayObj = new Jday(year, month, day, hour, minute);
         this.jday = jdayObj.getJday();
         tideCalculate = new TideCalculate(jday);
+        setSearchID();
     }
 
-    public double getTime() {
+    public double getJday() {
         return jday;
-    }
-
-    public String getTimeString() {
-        return myMonthString[monthInt - 1] + " " + dayInt + ", " + yearInt + ", "
-                + (hourInt < 10 ? "0" : "") + hourInt + ":" + (minuteInt < 10 ? "0" : "") + minuteInt + ":00";
-    }
-
-    public String getTimeString(double juliandate) {
-        int[] datevec = jdayToDatevec(juliandate);
-        return myMonthString[datevec[1] - 1] + " " + datevec[2] + ", " + datevec[0] + ", "
-                + (datevec[3] < 10 ? "0" : "") + datevec[3] + ":" + (datevec[4] < 10 ? "0" : "") + datevec[4] + ":00";
     }
 
 
@@ -91,12 +75,15 @@ public class TideSearch {
 
     public void doTidalAnalysisForNow() {
         LocalDateTime timeNow = LocalDateTime.now();
-        int year = timeNow.getYear();
-        int month = timeNow.getMonthValue();
-        int day = timeNow.getDayOfMonth();
-        int hour = timeNow.getHour();
-        int minute = timeNow.getMinute();
+        this.year = timeNow.getYear();
+        this.month = timeNow.getMonthValue();
+        this.day = timeNow.getDayOfMonth();
+        this.hour = timeNow.getHour();
+        this.minute = timeNow.getMinute();
         Jday jdayNow = new Jday(year, month, day, hour, minute);
+        this.jday = jdayNow.getJday();
+        setSearchID();
+        setSearchKey();
         tideCalculate = new TideCalculate(jdayNow.getJday());
         printTide(tideCalculate);
 
@@ -105,178 +92,78 @@ public class TideSearch {
 
     public void doTideSearch() {
         getInputTime();
-        double inputJDay = calculateJDay(yearInt, monthInt, dayInt, hourInt, minuteInt);
-        tideCalculate = new TideCalculate(inputJDay);
+        Jday jdaySearch = new Jday(year, month, day, hour, minute);
+        this.jday = jdaySearch.getJday();
+        setSearchID();
+        setSearchKey();
+        tideCalculate = new TideCalculate(jdaySearch.getJday());
         printTide(tideCalculate);
 
     }
 
 
     private void printTide(TideCalculate tideCalculate) {
-        double jdayIntPrint = tideCalculate.getJday();
-        Jday jdayObjPrint = new Jday();
-        System.out.println("Time input is --> " + getTimeString(jdayIntPrint));
-        System.out.println("Tidal Elevation for this time is " + tideCalculate.getElevation() + " m");
+        Jday jdayObjPrint = new Jday(tideCalculate.getJday());
+        System.out.println("Time input is --> " + jdayObjPrint.getJdayString());
+        System.out.println("Tidal Elevation for this time is "
+                + new DecimalFormat("##.##").format(tideCalculate.getElevation()) + " m");
         System.out.println("Next High Tide at "
-                + jdayObjPrint.getJdayStringHourMinuteSeconds(tideCalculate.getNextHighPeakJday()));
-        System.out.println("Next High Tide Elevation is " + tideCalculate.getNextHighPeakElevation() + " m");
+                + jdayObjPrint.getJdayStringHourMinute(tideCalculate.getNextHighPeakJday()));
+        System.out.println("Next High Tide Elevation is "
+                + new DecimalFormat("##.##").format(tideCalculate.getNextHighPeakElevation()) + " m");
         System.out.println("Next Low Tide at "
-                + jdayObjPrint.getJdayStringHourMinuteSeconds(tideCalculate.getNextLowPeakJday()));
-        System.out.println("Next Low Tide Elevation is " + tideCalculate.getNextLowPeakElevation() + " m");
+                + jdayObjPrint.getJdayStringHourMinute(tideCalculate.getNextLowPeakJday()));
+        System.out.println("Next Low Tide Elevation is "
+                + new DecimalFormat("##.##").format(tideCalculate.getNextLowPeakElevation()) + " m");
     }
 
-    private double calculateElevation(double jday) {
-        return 2.0; // stub
-    }
-
-    private double calculateNextHighTideTime(double jday) {
-        return jday + 1 / 24; // stub
-    }
-
-    private double calculateNextHighTideElev(double jday) {
-        return 3; // stub
-    }
-
-    private double calculateNextLowTideTime(double jday) {
-        return jday + 7 / 24; // stub
-    }
-
-    private double calculateNextLowTideElev(double jday) {
-        return 1; // stub
-    }
-
-
-    protected double calculateJDay(int year, int month, int day, int hour, int minute) {
-        int numberOfDaysAfter1970;
-        int plusExtraDays;
-        int daysInYear;
-        int numberOfYearsAfter1970 = year - 1970;
-//        double hourInDouble = hour;
-        plusExtraDays = (numberOfYearsAfter1970 + 1) / 4;
-
-        daysInYear = calculateDaysInYear();
-        numberOfDaysAfter1970 = 365 * numberOfYearsAfter1970 + plusExtraDays + daysInYear;
-
-
-        jday = jday1970 + numberOfDaysAfter1970 + (double) hour / 24 + (double) minute / (24 * 60);
-
-        return jday; // stub
-    }
-
-    private int calculateDaysInYear() {
-        int daysInYear = 0;
-        if (isLeapYear(yearInt)) {
-            if (monthInt == 1) {
-                daysInYear = dayInt - 1;
-            } else {
-                for (int monthIdx = 1; monthIdx < monthInt - 1; monthIdx++) {
-                    daysInYear += monthDaysIsLeapArray[monthIdx];
-                }
-                daysInYear = daysInYear + dayInt - 1;
-            }
-
-        } else {
-            if (monthInt == 1) {
-                daysInYear = dayInt - 1;
-            } else {
-                for (int monthIdx = 0; monthIdx < monthInt - 1; monthIdx++) {
-                    daysInYear += monthDaysNoLeapArray[monthIdx];
-                }
-                daysInYear = daysInYear + dayInt - 1;
-            }
-
-        }
-        return daysInYear;
-
-    }
-
-
-    private boolean isLeapYear(int year) {
-        return year % 4 == 0;
-    }
-
-
-    public int[] jdayToDatevec(double jday) {
-        int numberOfDaysAfter1970 = (int) jday - jday1970;
-        int plusExtraDays;
-        int daysInYear;
-        int[] yearFindResults = calculateNumberOfYears(numberOfDaysAfter1970);
-        int year = yearFindResults[0];
-        int daysRemains = yearFindResults[1];
-
-        int[] monthFindResults = calculateNumberOfMonths(daysRemains, year);
-        int month = monthFindResults[0];
-        int day = monthFindResults[1];
-
-        double hourRemains = jday - (int) jday;
-        int hour = (int) (hourRemains * 24);
-        double minuteRemains = hourRemains * 24 - hour;
-        int minute = (int) Math.rint(minuteRemains * 60);
-
-        return new int[]{year, month, day, hour, minute};
-    }
-
-    private int[] calculateNumberOfMonths(int days, int year) {
-        int monthAttempt = 1;
-        int lastDays = 1;
-        while (days >= 0) {
-
-            if (isLeapYear(year)) {
-                lastDays = days + 1;
-                days -= monthDaysIsLeapArray[monthAttempt];
-                if (days >= 0) {
-                    monthAttempt += 1;
-                }
-            } else {
-                lastDays = days + 1;
-                days -= monthDaysNoLeapArray[monthAttempt];
-                if (days >= 0) {
-                    monthAttempt += 1;
-                }
-            }
-        }
-        return new int[]{monthAttempt, lastDays};
-    }
-
-    private int[] calculateNumberOfYears(int num) {
-        int yearAttempt = 1970;
-
-        while (num >= 365) {
-            if (isLeapYear(yearAttempt)) {
-                if (num >= 366) {
-                    num -= 366;
-                    yearAttempt += 1;
-                }
-            } else {
-                num -= 365;
-                yearAttempt += 1;
-            }
-        }
-        return new int[]{yearAttempt, num};
-    }
 
 
     private void getInputTime() {
-        System.out.println("\nIn put year: ");
+        System.out.println("\nIn put year: (1970 to 2038)");
         yearString = input.next();
-        yearInt = Integer.parseInt(yearString);
+        year = Integer.parseInt(yearString);
 
         System.out.println("\nIn put month: (1 - 12)");
         monthString = input.next();
-        monthInt = Integer.parseInt(monthString);
+        month = Integer.parseInt(monthString);
 
         System.out.println("\nIn put day: (1 - 31)");
         dayString = input.next();
-        dayInt = Integer.parseInt(dayString);
+        day = Integer.parseInt(dayString);
 
         System.out.println("\nIn put hour: (0 - 24)");
         hourString = input.next();
-        hourInt = Integer.parseInt(hourString);
+        hour = Integer.parseInt(hourString);
 
         System.out.println("\nIn put minute: (0 - 60)");
         minuteString = input.next();
-        minuteInt = Integer.parseInt(minuteString);
+        minute = Integer.parseInt(minuteString);
 
+    }
+
+
+    public void setSearchID() {
+        this.searchID = (int) Math.rint((jday - jday1970) * 24.0 * 60.0);
+    }
+
+    public int getSearchID() {
+        return searchID;
+    }
+
+
+    public TideCalculate getTideCalculate() {
+        return tideCalculate;
+    }
+
+    public void setSearchKey() {
+        this.searchKey = Integer.toString(year) + (month < 10 ? "0" : "") + Integer.toString(month)
+                + (day < 10 ? "0" : "") + Integer.toString(day) + (hour < 10 ? "0" : "")
+                + Integer.toString(hour) + (minute < 10 ? "0" : "") + Integer.toString(minute);
+    }
+
+    public String getSearchKey() {
+        return searchKey;
     }
 
 

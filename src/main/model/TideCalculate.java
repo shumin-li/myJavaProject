@@ -1,9 +1,11 @@
 package model;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 // calculate tidal elevation in Vancouver based on the given julian time, with the option to give a array of tidal chart
 // and next high tide (time and elevation), next low tide (time and elevation),
+// !!! remember to better implement the method of isPacificDayTime
 public class TideCalculate {
     // I need a lot of fields to store the data of different tidal constituents.
     // datum, nodeFactor, avalue, speed, equilibarg, kappa
@@ -12,6 +14,7 @@ public class TideCalculate {
     private Jday jdayObj;
     private TidePeaks tidePeaks;
     private double datum = 3.06100000000000;
+
     private double[] nodeFactor = {
             1.08360000000000,
             1.05290000000000,
@@ -245,6 +248,7 @@ public class TideCalculate {
 
     // Create a per-minute array of double values (size 2161), half day before, and one day after
     private int arraySize = 2161;
+    private int locationInputJday = 720; // arrayJday[locationInputJday] will give us the same as jday;
     private double[] jdayArray = new double[arraySize];
     private double[] elevationArray = new double[arraySize];
 
@@ -427,17 +431,18 @@ public class TideCalculate {
     }
 
     public double getElevation() {
-        return elevationArray[720];
+        return elevationArray[locationInputJday];
     }
 
-
-    // Function: findHighPeaks; get indices, times, elevations
-
-
-
-    // Function: findLowPeaks;
-    // Function: findNextHigh:
-    // Function: findNextLow:
+    public String shortMessage() {
+        Jday jdayMessage = new Jday(jday);
+        return jdayMessage.getJdayString() + " --> Elevation = "
+                + new DecimalFormat("##.##").format(elevationArray[locationInputJday]) + "m, "
+                + "Next High Tide at " + jdayMessage.getJdayStringHourMinute(getNextHighPeakJday())
+                + " (" +  new DecimalFormat("##.##").format(getNextHighPeakElevation()) + "m), "
+                + "Next Low Tide at " + jdayMessage.getJdayStringHourMinute(getNextLowPeakJday())
+                + " (" +  new DecimalFormat("##.##").format(getNextLowPeakElevation()) + "m).";
+    }
 
 
 }

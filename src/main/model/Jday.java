@@ -161,13 +161,13 @@ public class Jday {
 
             if (isLeapYear(year)) {
                 lastDays = days + 1;
-                days -= monthDaysIsLeapArray[monthAttempt];
+                days -= monthDaysIsLeapArray[monthAttempt - 1];
                 if (days >= 0) {
                     monthAttempt += 1;
                 }
             } else {
                 lastDays = days + 1;
-                days -= monthDaysNoLeapArray[monthAttempt];
+                days -= monthDaysNoLeapArray[monthAttempt - 1];
                 if (days >= 0) {
                     monthAttempt += 1;
                 }
@@ -211,7 +211,7 @@ public class Jday {
                 + (hour < 10 ? "0" : "") + hour + ":" + (minute < 10 ? "0" : "") + minute + ":00";
     }
 
-    public String getJdayStringHourMinuteSeconds(double jday) {
+    public String getJdayStringHourMinute(double jday) {
         int[] returnedDatevec = jdayToDatevec(jday);
 
         int hourInt = returnedDatevec[3];
@@ -220,16 +220,10 @@ public class Jday {
         return (hourInt < 10 ? "0" : "") + hourInt + ":" + (minuteInt < 10 ? "0" : "") + minuteInt;
     }
 
-    public String getJdayStringHourMinuteSeconds() {
+    public String getJdayStringHourMinute() {
         return (hour < 10 ? "0" : "") + hour + ":" + (minute < 10 ? "0" : "") + minute;
     }
 
-
-    public String getTimeString(double juliandate) {
-        int[] datevec = jdayToDatevec(juliandate);
-        return myMonthString[datevec[1] - 1] + " " + datevec[2] + ", " + datevec[0] + ", "
-                + (datevec[3] < 10 ? "0" : "") + datevec[3] + ":" + (datevec[4] < 10 ? "0" : "") + datevec[4] + ":00";
-    }
 
 
 }

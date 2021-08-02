@@ -8,21 +8,10 @@ import java.util.Scanner;
 
 public class TideApp {
 
-    private TideSearch newSearch;
-    private FavoriteSearch newHistory;
+    private TideSearch newSearch = new TideSearch();
+    private FavoriteSearch newFavorite = new FavoriteSearch();
     private Scanner input = new Scanner(System.in);
 
-    private String yearString;
-    private String monthString;
-    private String dayString;
-    private String hourString;
-    private String minuteString;
-
-    private int yearInt;
-    private int monthInt;
-    private int dayInt;
-    private int hourInt;
-    private int minuteInt;
 
     // EFFECTS: runs the TideApp application
     public TideApp() {
@@ -45,9 +34,6 @@ public class TideApp {
             } else {
                 processCommand(command);
             }
-
-
-
         }
     }
 
@@ -55,27 +41,73 @@ public class TideApp {
     // MODIFIES: this
     // EFFECTS: processes user command
     private void processCommand(String command) {
-        newSearch = new TideSearch();
-        newHistory = new FavoriteSearch();
+//        newSearch = new TideSearch();
+//        newFavorite = new FavoriteSearch();
 
         if (command.equals("now")) {
-            newSearch.doTidalAnalysisForNow();
+            this.newSearch.doTidalAnalysisForNow();
+            processSave();
         } else if (command.equals("search")) {
-            newSearch.doTideSearch();
+            this.newSearch.doTideSearch();
+            processSave();
         } else if (command.equals("review")) {
-            newHistory.doReviewHistory();
+            this.newFavorite.doReview();
+            if (newFavorite.size() != 0) {
+                processDelete();
+            }
         } else {
             System.out.println("Selection not valid...");
         }
 
 
+    }
+
+
+    private void processDelete() {
+        System.out.println("Do you want to delete any of your favorite searches? ('yes' or 'no')");
+        String commandForDelete = null;
+        commandForDelete = input.next();
+        commandForDelete = commandForDelete.toLowerCase();
+
+        if (commandForDelete.equals("yes")) {
+            doDelete();
+        } else if (commandForDelete.equals("no")) {
+            System.out.println("Nothing is deleted!");
+        } else {
+            System.out.println("Input not valid.");
+        }
+    }
+
+    private void doDelete() {
+        if (newFavorite.size() == 0) {
+            System.out.println("Empty Records, nothing to delete!");
+        } else {
+            System.out.println("Which record do you want to delete?");
+            System.out.println("type 'all' to delete all records "
+                    + "or type the key to delete a specific record.");
+            String commandWhichToDelete = null;
+            commandWhichToDelete = input.next();
+            commandWhichToDelete = commandWhichToDelete.toLowerCase();
+
+            if (commandWhichToDelete.equals("all")) {
+                this.newFavorite.removeAll();
+                System.out.println("All records are deleted");
+            } else {
+                this.newFavorite.removeFavorite(commandWhichToDelete);
+                System.out.println("Favorite Tide Search with 'key = " + commandWhichToDelete + "' has been deleted!");
+            }
+        }
+    }
+
+
+    private void processSave() {
         System.out.println("Do you want to save this search to your favorite search? ('yes' or 'no')");
         String commandAfterSearch = null;
         commandAfterSearch = input.next();
         commandAfterSearch = commandAfterSearch.toLowerCase();
 
         if (commandAfterSearch.equals("yes")) {
-            newHistory.addSearch(newSearch);
+            this.newFavorite.addFavorite(newSearch);
         } else if (commandAfterSearch.equals("no")) {
             System.out.println("Search not saved to MyFavorite Search");
         } else {
@@ -83,7 +115,6 @@ public class TideApp {
         }
 
     }
-
 
 
     // EFFECTS: displays menu of options to user
@@ -94,10 +125,6 @@ public class TideApp {
         System.out.println("\treview -> Review Saved Search History");
         System.out.println("\tquit -> quit");
     }
-
-
-
-
 
 
 }
