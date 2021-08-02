@@ -306,6 +306,7 @@ public class TideCalculate {
         return elevationArray;
     }
 
+    // This method only works for year 2021, need more data to calculate other years.
     public void calculateElevationArray() {
         jdayObj = new Jday(jdayStandard);
         int numOfYearAfter1970 = jdayObj.getYear() - 1970 + 1;
@@ -378,21 +379,21 @@ public class TideCalculate {
         return array3;
     }
 
-    private double[] arrayPlus(double[] array1, double number2) {
-        double[] array3 = new double[array1.length];
-        for (int i = 0; i < array1.length; i++) {
-            array3[i] = array1[i] + number2;
-        }
-        return array3;
-    }
-
-    private double[] arrayPlus(double[] array1, double[] array2) {
-        double[] array3 = new double[array1.length];
-        for (int i = 0; i < array1.length; i++) {
-            array3[i] = array1[i] + array2[i];
-        }
-        return array3;
-    }
+//    private double[] arrayPlus(double[] array1, double number2) {
+//        double[] array3 = new double[array1.length];
+//        for (int i = 0; i < array1.length; i++) {
+//            array3[i] = array1[i] + number2;
+//        }
+//        return array3;
+//    }
+//
+//    private double[] arrayPlus(double[] array1, double[] array2) {
+//        double[] array3 = new double[array1.length];
+//        for (int i = 0; i < array1.length; i++) {
+//            array3[i] = array1[i] + array2[i];
+//        }
+//        return array3;
+//    }
 
 
 

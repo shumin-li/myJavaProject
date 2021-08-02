@@ -59,6 +59,7 @@ public class TideSearch {
         this.jday = jdayObj.getJday();
         tideCalculate = new TideCalculate(jday);
         setSearchID();
+        setSearchKey();
     }
 
     public double getJday() {

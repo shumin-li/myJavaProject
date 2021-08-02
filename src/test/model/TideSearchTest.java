@@ -22,25 +22,10 @@ class TideSearchTest {
 
     @Test
     void testGetTidalElevation() {
-        assertEquals(1, testSearch.getTidalElevation());
+
+        assertEquals(3.2724050492278476, testSearch.getTidalElevation());
     }
 
-//    @Test
-//    void testJdayToDatevec() {
-//        double jday = testSearch.getJday();
-//        int[] testDatevec = testSearch.jdayToDatevec(jday);
-//        assertEquals(2021, testDatevec[0]);
-//        assertEquals(7, testDatevec[1]);
-//        assertEquals(31, testDatevec[2]);
-//        assertEquals(13, testDatevec[3]);
-//        assertEquals(30, testDatevec[4]);
-//    }
-
-//    @Test
-//    void testStringOutputOfJulianDate() {
-//        double jday = testSearch.getJday();
-//        assertEquals("July 31, 2021, 13:30:00", testSearch.getTimeString(jday));
-//    }
 
 
 }

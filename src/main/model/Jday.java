@@ -47,6 +47,8 @@ public class Jday {
         this.hour = hour;
         this.minute = minute;
         this.jday = calculateJday(year, month, day, hour, minute);
+        this.datevec = jdayToDatevec(jday);
+
     }
 
 
@@ -96,7 +98,7 @@ public class Jday {
 //        double hourInDouble = hour;
         plusExtraDays = (numberOfYearsAfter1970 + 1) / 4;
 
-        daysInYear = calculateDaysInYear();
+        daysInYear = calculateDaysInYear(year, month, day);
         numberOfDaysAfter1970 = 365 * numberOfYearsAfter1970 + plusExtraDays + daysInYear;
 
 
@@ -106,7 +108,7 @@ public class Jday {
 
     }
 
-    private int calculateDaysInYear() {
+    private int calculateDaysInYear(int year, int month, int day) {
         int daysInYear = 0;
         if (isLeapYear(year)) {
             if (month == 1) {
