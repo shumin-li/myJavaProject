@@ -5,14 +5,14 @@ import java.util.List;
 
 
 // Represents a list of tidal elevation research history
-public class SearchHistory {
+public class FavoriteSearch {
     private ArrayList<TideSearch> newHistory;
 
 
     /*
      * Construct a SearchHistory
      */
-    public SearchHistory() {
+    public FavoriteSearch() {
         newHistory = new ArrayList<TideSearch>();
     }
 

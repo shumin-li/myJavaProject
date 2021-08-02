@@ -1,18 +1,15 @@
 package ui;
 
 
-import model.SearchHistory;
+import model.FavoriteSearch;
 import model.TideSearch;
 
-import java.util.Locale;
 import java.util.Scanner;
 
 public class TideApp {
 
     private TideSearch newSearch;
-    private SearchHistory newHistory;
-//    private TideSearch winterSearch;
-    private SearchHistory yearHistory;
+    private FavoriteSearch newHistory;
     private Scanner input = new Scanner(System.in);
 
     private String yearString;
@@ -59,7 +56,7 @@ public class TideApp {
     // EFFECTS: processes user command
     private void processCommand(String command) {
         newSearch = new TideSearch();
-        newHistory = new SearchHistory();
+        newHistory = new FavoriteSearch();
 
         if (command.equals("now")) {
             newSearch.doTidalAnalysisForNow();
@@ -70,6 +67,21 @@ public class TideApp {
         } else {
             System.out.println("Selection not valid...");
         }
+
+
+        System.out.println("Do you want to save this search to your favorite search? ('yes' or 'no')");
+        String commandAfterSearch = null;
+        commandAfterSearch = input.next();
+        commandAfterSearch = commandAfterSearch.toLowerCase();
+
+        if (commandAfterSearch.equals("yes")) {
+            newHistory.addSearch(newSearch);
+        } else if (commandAfterSearch.equals("no")) {
+            System.out.println("Search not saved to MyFavorite Search");
+        } else {
+            System.out.println("Input not valid.");
+        }
+
     }
 
 

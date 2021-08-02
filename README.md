@@ -39,7 +39,7 @@ solid scientific foundation, good coding style and straightforward user interfac
 
 ## User Stories
 
-* As a user, I want to type in a time at which I want to know the tidal elevations
-* As a user, I want to get the tidal elevation of the time I put
-* As a user, I want to save my search result to a local repository
-* As a user, I want to review all my saved tide searches
+* As a user, I want to type in a time, and get the tidal elevation at that time and corresponding tidal chart of the day
+* As a user, I want to save the search to MyFavoriteSearch
+* As a user, I want to review all my saved TideSearch
+* As a user, I want to delete some of my saved TideSearch
