@@ -1,7 +1,9 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import persistence.Writable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,9 +55,6 @@ class FavoriteSearchTest {
         testFavoriate.removeAll();
         assertEquals(0, testFavoriate.size());
     }
-
-
-
 
 
 }

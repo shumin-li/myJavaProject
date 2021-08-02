@@ -1,12 +1,16 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.HashMap;
 
 
 // Represents a list of tidal elevation research history
-public class FavoriteSearch {
+public class FavoriteSearch implements Writable {
     private HashMap<String, TideCalculate> favoriteList;
-    private String searchKey;
+    private String jsonSaveName;
     private TideCalculate tideCalculate;
 
 
@@ -52,4 +56,23 @@ public class FavoriteSearch {
     }
 
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", jsonSaveName);
+        json.put("searches", tideCalculateToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray tideCalculateToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (String key : favoriteList.keySet()) {
+            TideCalculate newCalculate = favoriteList.get(key);
+            jsonArray.put(newCalculate.toJson());
+        }
+
+        return jsonArray;
+    }
 }

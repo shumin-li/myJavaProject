@@ -3,7 +3,11 @@ package ui;
 
 import model.FavoriteSearch;
 import model.TideSearch;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class TideApp {
@@ -12,10 +16,17 @@ public class TideApp {
     private FavoriteSearch newFavorite = new FavoriteSearch();
     private Scanner input = new Scanner(System.in);
 
+    private static final String JSON_STORE = "./data/myFavoriteTideSearch.json";
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+
 
     // EFFECTS: runs the TideApp application
-    public TideApp() {
+    public TideApp() throws FileNotFoundException {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runTideApp();
+
     }
 
     // MODIFIES: this
@@ -55,11 +66,36 @@ public class TideApp {
             if (newFavorite.size() != 0) {
                 processDelete();
             }
+        } else if (command.equals("s")) {
+            saveFavoriteSearch();
+        } else if (command.equals("l")) {
+            loadFavoriteSearch();
         } else {
             System.out.println("Selection not valid...");
         }
 
 
+    }
+
+
+    private void saveFavoriteSearch() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(newFavorite);
+            jsonWriter.close();
+            System.out.println("Saved to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    private void loadFavoriteSearch() {
+        try {
+            newFavorite = jsonReader.read();
+            System.out.println("Loaded from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 
 
@@ -123,6 +159,8 @@ public class TideApp {
         System.out.println("\tnow -> Tidal Elevation Information for now");
         System.out.println("\tsearch -> Search for Tidal Prediction for a Specific Time");
         System.out.println("\treview -> Review Saved Search History");
+        System.out.println("\ts -> save work room to file");
+        System.out.println("\tl -> load work room from file");
         System.out.println("\tquit -> quit");
     }
 

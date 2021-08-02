@@ -1,18 +1,22 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
 // calculate tidal elevation in Vancouver based on the given julian time, with the option to give a array of tidal chart
 // and next high tide (time and elevation), next low tide (time and elevation),
 // !!! remember to better implement the method of isPacificDayTime
-public class TideCalculate {
+public class TideCalculate implements Writable {
     // I need a lot of fields to store the data of different tidal constituents.
     // datum, nodeFactor, avalue, speed, equilibarg, kappa
     private double jday;
     private double jdayStandard;
     private Jday jdayObj;
     private TidePeaks tidePeaks;
+    private String searchKey;
     private double datum = 3.06100000000000;
 
     private double[] nodeFactor = {
@@ -273,6 +277,7 @@ public class TideCalculate {
 
         setJdayArray();
         calculateElevationArray();
+        setSearchKey();
         this.tidePeaks = new TidePeaks(jdayArray, elevationArray);
     }
 
@@ -445,5 +450,27 @@ public class TideCalculate {
                 + " (" +  new DecimalFormat("##.##").format(getNextLowPeakElevation()) + "m).";
     }
 
+    public void setSearchKey() {
+        jdayObj = new Jday(jday);
+        int year = jdayObj.getYear();
+        int month = jdayObj.getMonth();
+        int day = jdayObj.getDay();
+        int hour = jdayObj.getHour();
+        int minute = jdayObj.getMinute();
+        this.searchKey = Integer.toString(year) + (month < 10 ? "0" : "") + Integer.toString(month)
+                + (day < 10 ? "0" : "") + Integer.toString(day) + (hour < 10 ? "0" : "")
+                + Integer.toString(hour) + (minute < 10 ? "0" : "") + Integer.toString(minute);
+    }
 
+    public String getSearchKey() {
+        return searchKey;
+    }
+
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("key", getSearchKey());
+        return json;
+    }
 }
