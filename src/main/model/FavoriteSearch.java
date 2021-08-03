@@ -4,7 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 
 // Represents a list of tidal elevation research history
@@ -53,6 +56,14 @@ public class FavoriteSearch implements Writable {
             }
         }
 
+    }
+
+    public Set<String> getKeySet() {
+        return favoriteList.keySet();
+    }
+
+    public TideCalculate getTideCalculate(String key) {
+        return favoriteList.get(key);
     }
 
 
