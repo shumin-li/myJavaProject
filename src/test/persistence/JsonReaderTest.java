@@ -11,6 +11,8 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+// Cite: This class is written based on the JsonSerializationDemo project provided in UBC CPSC 210
+
 public class JsonReaderTest extends JsonTest{
     @Test
     void testReaderNonExistentFile() {
