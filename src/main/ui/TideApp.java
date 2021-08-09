@@ -6,11 +6,21 @@ import model.TideSearch;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class TideApp {
+
+//    public static final int WIDTH = 1000;
+//    public static final int HEIGHT = 600;
+
+//    private ReviewPanel rp;
+//    private SearchPanel sp;
 
     private TideSearch newSearch = new TideSearch();
     private FavoriteSearch newFavorite = new FavoriteSearch();
@@ -23,11 +33,66 @@ public class TideApp {
 
     // EFFECTS: runs the TideApp application
     public TideApp() throws FileNotFoundException {
+//        super("Vancouver Tide Prediction App");
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
+//        initializeFrame();
         runTideApp();
 
     }
+
+//    // EFFECTS: Initialize Frame
+//    private void initializeFrame() {
+//        setLayout(new BorderLayout());
+//        setMinimumSize(new Dimension(WIDTH, HEIGHT));
+//
+//        initializePanel();
+//
+//
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setLocationRelativeTo(null);
+//        pack();
+//        setVisible(true);
+//    }
+
+//
+//    private void initializePanel() {
+//        sp = new SearchPanel();
+//        sp.setLayout(new GridLayout(1,0, 0, 5));
+//        sp.setSize(new Dimension(0, 0));
+//        add(sp, BorderLayout.NORTH);
+//
+//        JLabel label = new JLabel(" a very very very very very very very very long label");
+//        label.setMinimumSize(new Dimension(800,0));
+//
+//
+//        JButton nowButtion = new JButton("now");
+//        nowButtion.addActionListener(this);
+//        JButton searchButton = new JButton("search");
+//        JButton reviewButton = new JButton("review");
+//        JButton saveButton = new JButton("save");
+//        JButton loadButton = new JButton("load");
+//
+//        sp.add(nowButtion);
+//        sp.add(searchButton);
+//        sp.add(reviewButton);
+//        sp.add(saveButton);
+//        sp.add(loadButton);
+//
+//        JPanel sp2 = new JPanel();
+//        sp2.setLayout(new GridLayout(1,0, 0, 5));
+//        sp2.setSize(new Dimension(0, 0));
+//        add(sp2, BorderLayout.CENTER);
+//        sp2.add(label);
+//
+//
+//    }
+//
+//
+
+
+
+
 
     // MODIFIES: this
     // Effects: processes user input
@@ -165,4 +230,8 @@ public class TideApp {
     }
 
 
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//
+//    }
 }

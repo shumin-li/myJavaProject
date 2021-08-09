@@ -167,5 +167,9 @@ public class TideSearch {
         return searchKey;
     }
 
+    public String getShortMessage() {
+        return tideCalculate.shortMessage();
+    }
+
 
 }

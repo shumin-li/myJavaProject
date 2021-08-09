@@ -466,6 +466,31 @@ public class TideCalculate implements Writable {
         return searchKey;
     }
 
+    public int[] getHighPeakIdx() {
+        return tidePeaks.highPeakIndex;
+    }
+
+    public int[] getLowPeakIdx() {
+        return tidePeaks.lowPeakIndex;
+    }
+
+
+    public double[] getHighPeaksElevations() {
+        return tidePeaks.highPeakElevations;
+    }
+
+    public double[] getLowPeaksElevations() {
+        return tidePeaks.lowPeakElevations;
+    }
+
+    public double[] getHighPeakJdays() {
+        return tidePeaks.highPeakJdays;
+    }
+
+    public double[] getLowPeakJdays() {
+        return tidePeaks.lowPeakJdays;
+    }
+
 
     @Override
     public JSONObject toJson() {
