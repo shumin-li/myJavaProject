@@ -10,11 +10,13 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class TideGUI extends JFrame implements ActionListener {
+public class TideGUI extends JFrame implements ActionListener, WindowListener {
 
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 600;
@@ -53,7 +55,9 @@ public class TideGUI extends JFrame implements ActionListener {
         super("Vancouver Tide Prediction App");
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
+
         initializeFrame();
+        loadFavoriteSearch();
 //        runTideApp();
 //        messageString = "test new string 22...";
 //        messageLabel.setText(messageString);
@@ -64,10 +68,11 @@ public class TideGUI extends JFrame implements ActionListener {
     private void initializeFrame() {
         setLayout(new BorderLayout());
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout(5, 5));
         setResizable(false);
         initializePanel();
+        addWindowListener(this);
 
 
         pack();
@@ -330,6 +335,48 @@ public class TideGUI extends JFrame implements ActionListener {
         } else if (e.getSource() == saveButton) {
             saveFavoriteSearch();
         }
+
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        int answer = JOptionPane.showConfirmDialog(null,
+                "Do you want to save your favorite search to local?",
+                 "Save Window",JOptionPane.YES_NO_OPTION);
+        if (answer == 0) {
+            saveFavoriteSearch();
+            dispose();
+        }
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
 
     }
 }

@@ -292,7 +292,7 @@ public class TideCalculate implements Writable {
 
     // Function: isPacificDayTime
     // !!! Note: this function currently is just an approximation, need to further implement it later.
-    private boolean isPacificDayTime(double jday) {
+    public boolean isPacificDayTime(double jday) {
         jdayObj = new Jday(jday);
         int month = jdayObj.getMonth();
         int day = jdayObj.getDay();

@@ -6,6 +6,7 @@ import model.TideSearch;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 
 import static java.util.Objects.isNull;
 
@@ -71,7 +72,7 @@ public class SearchPanel extends JPanel {
         g2D.setFont(new Font("Comic Sans", Font.BOLD, 24));
         g2D.setStroke(new BasicStroke(2));
         g2D.setColor(new Color(0x0072BD));
-        g2D.drawPolyline(xpoints, ypoints,2161);
+        g2D.drawPolyline(xpoints, ypoints, 2161);
         g2D.setFont(new Font("Comic Sans", Font.BOLD, 20));
         addHighTides(g2D);
         addLowTides(g2D);
@@ -89,12 +90,11 @@ public class SearchPanel extends JPanel {
         while (indexArray[i] > 0) {
             drawPoint(g2D, indexToX(indexArray[i]),
                     elevationToY(elevationArray[i]),
-                    new Color(0x77AC30), peakJdayArray[i]);
+                    new Color(0x77AC30), peakJdayArray[i], elevationArray[i]);
             i++;
         }
 
     }
-
 
 
     private void addHighTides(Graphics2D g2D) {
@@ -107,22 +107,24 @@ public class SearchPanel extends JPanel {
         while (indexArray[i] > 0) {
             drawPoint(g2D, indexToX(indexArray[i]),
                     elevationToY(elevationArray[i]),
-                    new Color(0xA2142F), peakJdayArray[i]);
+                    new Color(0xA2142F), peakJdayArray[i], elevationArray[i]);
             i++;
         }
 
     }
 
 
-    private void drawPoint(Graphics2D g2D, int x, int y, Color color, double jday) {
+    private void drawPoint(Graphics2D g2D, int x, int y, Color color, double jday, double ele) {
+        if (tideCalculate.isPacificDayTime(jday)) {
+            jday += 1.0 / 24.0;
+        }
         Jday peakJday = new Jday(jday);
         g2D.setColor(color);
         g2D.fillOval(x - 5, y - 5, 10, 10);
         g2D.drawString(peakJday.getJdayStringHourMinute(), x - 25, y + 30);
+        g2D.drawString("(" + new DecimalFormat("##.##").format(ele) + "m)", x - 35, y + 50);
+
     }
-
-
-
 
 
     private void addNowPoint(Graphics2D g2D) {
@@ -132,12 +134,14 @@ public class SearchPanel extends JPanel {
         g2D.setColor(Color.darkGray);
         g2D.drawString(titleJday.getJdayString(), 10, 30);
         g2D.setColor(Color.black);
-        g2D.fillOval(indexToX(720) - 7,elevationToY(elevationArray[720]) - 7,14,14);
+        g2D.fillOval(indexToX(720) - 7, elevationToY(elevationArray[720]) - 7, 14, 14);
 
         g2D.setFont(new Font("Comic Sans", Font.BOLD, 24));
 
         g2D.drawString(titleJday.getJdayStringHourMinute(), indexToX(720) - 25,
                 elevationToY(elevationArray[720]) + 35);
+        g2D.drawString("(" + new DecimalFormat("##.##").format(elevationArray[720]) + "m)",
+                indexToX(720) - 35, elevationToY(elevationArray[720]) + 60);
 
     }
 
