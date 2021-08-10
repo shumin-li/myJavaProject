@@ -45,3 +45,12 @@ solid scientific foundation, good coding style and straightforward user interfac
 * As a user, I want to delete some of my saved TideSearch
 * As a user, I want to be able to save my favorite TideSearch list to a file
 * As a user, I want to be able to load my saved favorite TideSearch list from a file
+
+
+
+## Phase 4: Task 2
+* Map interface was used
+* in my model package, FavoriteSearch class, I used a HashMap as a field to map my SearchKey (a string) and 
+TideCalculate (a class containing all the necessary calculation procedure of a tidal analysis). The field is
+  named as favoriteList, and it can avoid saving duplicate searches into my database. 
+  
