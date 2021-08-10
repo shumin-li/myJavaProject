@@ -54,3 +54,24 @@ solid scientific foundation, good coding style and straightforward user interfac
 TideCalculate (a class containing all the necessary calculation procedure of a tidal analysis). The field is
   named as favoriteList, and it can avoid saving duplicate searches into my database. 
   
+
+## Phase 4: Task 3
+* Reflection:
+
+  
+* The cohesion of my design is not good enough, I should split some of my big Class into small classes, and each of 
+them should be focused on a single task. For example, my TideGUI class are having too many functions about running
+  the app instead of just focusing on GUI part, I should separate it in to a TideGUI and TideRun class. 
+
+* In my TideGUI class, I should also separate my titlePanel, buttonPanel and messagePanel into different classes,
+  and build a TidePanel interface or super-class, so that I can put all my panels together and reduce some duplicated
+  codes.
+  
+* In my ui package, I should design a Window abstract-class or interface, so that I can put some common behaviour
+  of my InputWindow class and ReviewWindow class into it, which may reduce some replicated codes.
+
+* For the same 
+  reason, my TideSearch function is too clumsy and contains a lot of calculation functions, I should just let 
+  TideCalculate class handle all the calculations.
+
+
